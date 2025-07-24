@@ -1,8 +1,9 @@
 # appimage-builder recipe see https://appimage-builder.readthedocs.io for details
 version: 1
 script:
-  - rm -rf AppDir || true
-  - cp -r build/linux/x64/release/bundle AppDir
+  - rm -rf AppDir
+  - mkdir AppDir
+  - cp target/release/resize_ferris AppDir
   - mkdir -p AppDir/usr/share/icons/hicolor/256x256/apps/
   - cp appimage/ferris.png AppDir/usr/share/icons/hicolor/256x256/apps/
   - mkdir -p AppDir/usr/share/applications/
