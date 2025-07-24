@@ -16,7 +16,7 @@ AppDir:
     id: com.loloof64.resize_ferris
     name: ResizeFerris
     icon: ferris
-    version: 0.1.4
+    version: 0.1.6
     exec: resize_ferris
     exec_args: $@
   apt:
