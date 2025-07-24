@@ -3,4 +3,4 @@ Name=ResizeFerris
 Exec=resize_ferris
 Icon=ferris
 Type=Application
-Categories=GTK;GNOME;Utility;
+Categories=Utility;
