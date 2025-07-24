@@ -1,6 +1,6 @@
 use iced::{
     Length,
-    widget::{Svg, column, slider},
+    widget::{Svg, column, container, slider},
 };
 
 fn main() -> iced::Result {
@@ -32,9 +32,12 @@ impl MyApp {
     fn view(&self) -> iced::Element<Message> {
         column![
             slider(100.0..=600.0, self.ferris_size, Message::UpdateSize),
-            Svg::from_path(format!("{}/assets/ferris.svg", env!("CARGO_MANIFEST_DIR")))
-                .width(Length::Fixed(self.ferris_size))
-                .height(Length::Fixed(self.ferris_size))
+            container(
+                Svg::from_path(format!("{}/assets/ferris.svg", env!("CARGO_MANIFEST_DIR")))
+                    .width(Length::Fixed(self.ferris_size))
+                    .height(Length::Fixed(self.ferris_size))
+            )
+            .center(Length::Fill)
         ]
         .into()
     }
