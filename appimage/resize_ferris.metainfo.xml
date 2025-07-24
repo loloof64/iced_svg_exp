@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.loloof64.iced_svg_exp</id>
+  
+  <name>Resize Ferris</name>
+  <summary>Use the slider in order to resize Ferris</summary>
+  
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  
+  <description>
+    <p>
+      You have the Ferris image and a slider : you can drag the slider in order to resize Ferris.
+    </p>
+  </description>
+  
+  <launchable type="desktop-id">resize_ferris.desktop</launchable>
+</component>

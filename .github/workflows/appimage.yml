@@ -1,0 +1,25 @@
+name: AppImage Release
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    name: Build
+    runs-on: Ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - run: cargo build --release
+      - name: Build AppImage unsing appimage-builder
+        uses: docker://appimagecrafters/appimage-builder:latest
+        with:
+          entrypoint: appimage-builder
+          args: --recipe ./appimage/AppImageBuilder.yml --skip-test
+      - name: Save build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ResizeFerris-${{ github.ref_name }}-x86_64.AppImage
+          path: "./*.AppImage*"
