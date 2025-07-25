@@ -1,1 +1,1 @@
-- no change in the executable, just in the build process
+- bug fix : ferris image was not shown

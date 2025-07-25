@@ -1,6 +1,6 @@
 use iced::{
     Length,
-    widget::{Svg, column, container, slider},
+    widget::{Svg, column, container, slider, svg},
 };
 
 fn main() -> iced::Result {
@@ -30,10 +30,11 @@ impl MyApp {
     }
 
     fn view(&self) -> iced::Element<Message> {
+        let ferris_handle = svg::Handle::from_memory(include_bytes!("../assets/ferris.svg"));
         column![
             slider(100.0..=600.0, self.ferris_size, Message::UpdateSize),
             container(
-                Svg::from_path(format!("{}/assets/ferris.svg", env!("CARGO_MANIFEST_DIR")))
+                Svg::new(ferris_handle)
                     .width(Length::Fixed(self.ferris_size))
                     .height(Length::Fixed(self.ferris_size))
             )

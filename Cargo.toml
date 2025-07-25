@@ -1,6 +1,6 @@
 [package]
 name = "resize_ferris"
-version = "0.1.20"
+version = "0.1.22"
 edition = "2024"
 
 [dependencies]
