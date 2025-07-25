@@ -1,0 +1,33 @@
+name: Build Windows Installer
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install yq
+        run: choco install yq
+
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          msbuild-architecture: x64
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Compile Rust code
+        run: cargo build --release
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ResizeFerris-${{ github.ref_name }}-x86_64.exe
+          path: "${{ github.workspace }}\\target\\release\\resize_ferris.exe"

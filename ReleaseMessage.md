@@ -1,1 +1,1 @@
-- bug fix : ferris image was not shown
+- add windows target
