@@ -1,3 +1,5 @@
+#![windows_subsystem = "windows"]
+
 use iced::{
     Length,
     widget::{Svg, column, container, slider, svg},

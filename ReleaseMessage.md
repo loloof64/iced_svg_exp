@@ -1,1 +1,1 @@
-- fix missing windows target
+- windows exe does not start from terminal any more
