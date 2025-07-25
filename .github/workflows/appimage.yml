@@ -5,51 +5,48 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Build AppImage
     runs-on: Ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
-      - name: Restore Docker image cache
-        id: docker-cache
-        uses: actions/cache@v4
-        with:
-          path: /tmp/docker-cache
-          key: docker-image-appimage-builder-v1
-
-      - name: Load Docker image from cache (if exists)
-        if: steps.docker-cache.outputs.cache-hit == 'true'
-        run: |
-          docker load -i /tmp/docker-cache/appimage-builder.tar
-
-      - name: Pull Docker image if not cached
-        if: steps.docker-cache.outputs.cache-hit != 'true'
-        run: |
-          docker pull appimagecrafters/appimage-builder:latest
-          mkdir -p /tmp/docker-cache
-          docker save appimagecrafters/appimage-builder:latest -o /tmp/docker-cache/appimage-builder.tar
-
-      - name: Cache cargo registry + target
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            target
-          key: ${{ runner.os }}-cargo-strict-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-cargo-strict-
-      - uses: actions-rs/toolchain@v1
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-      - run: cargo build --release
-      - name: Build AppImage using appimage-builder
+      - name: Compile Rust code
+        run: cargo build --release
+
+      - name: Create AppDir structure
         run: |
-          docker run --rm \
-            -v ${{ github.workspace }}:/workspace \
-            -w /workspace \
-            appimagecrafters/appimage-builder:latest \
-            appimage-builder \
-            --recipe appimage/AppImageBuilder.yml --skip-test
+          mkdir -p AppDir/usr/bin
+          cp target/release/resize_ferris AppDir/usr/bin/
+
+          # Create AppRun (entry executable)
+          echo -e '#!/bin/bash\nexec "${APPDIR}/usr/bin/resize_ferris" "$@"' > AppDir/AppRun
+          chmod +x AppDir/AppRun
+
+          # .desktop file
+          cat > AppDir/resize_ferris.desktop <<EOF
+          [Desktop Entry]
+          Type=Application
+          Name=Resize Ferris
+          Exec=${APPDIR}/usr/bin/resize_ferris
+          Icon=ferris
+          Categories=Utility;
+          EOF
+
+          # Icon
+          cp ferris.png AppDir/ferris.png
+
+      - name: Download appimagetool
+        run: |
+          wget https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
+          chmod +x appimagetool-x86_64.AppImage
+
+      - name: Build AppImage
+        run: |
+          ./appimagetool-x86_64.AppImage AppDir ResizeFerris-${{ github.ref_name }}-x86_64.AppImage
 
       - name: Save build Artifact
         uses: actions/upload-artifact@v4
