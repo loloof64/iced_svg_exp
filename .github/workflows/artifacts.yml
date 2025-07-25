@@ -19,6 +19,9 @@ jobs:
           path: ./artifacts
           name: ResizeFerris-${{ github.ref_name }}-x86_64.AppImage
 
+      - name: Rename windows artifact
+        run: mv ./artifacts/ResizeFerris.exe ./artifacts/ResizeFerris-${{ github.ref_name }}-x86_64.exe
+
       - name: Install GitHub CLI
         uses: actions/setup-node@v3
         with:

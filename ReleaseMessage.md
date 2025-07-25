@@ -1,1 +1,1 @@
-- add windows target
+- fix missing windows target
