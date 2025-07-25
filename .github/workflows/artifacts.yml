@@ -19,6 +19,12 @@ jobs:
           path: ./artifacts
           name: ResizeFerris-${{ github.ref_name }}-x86_64.AppImage
 
+      - name: Download windows artifact
+        uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
+          name: ResizeFerris-${{ github.ref_name }}-x86_64.exe
+
       - name: Install GitHub CLI
         uses: actions/setup-node@v3
         with:
