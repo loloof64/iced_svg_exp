@@ -52,4 +52,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ResizeFerris-${{ github.ref_name }}-x86_64.AppImage
-          path: "./*.AppImage*"
+          path: "./ResizeFerris*.AppImage"
